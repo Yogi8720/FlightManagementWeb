@@ -1,0 +1,28 @@
+﻿@model FlightManagement.Model.Flight
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Create Category</h2>
+            <hr />
+        </div>
+        <input type="hidden" asp-for="FlightNumber" />
+        <div class="mb-3">
+            <label asp-for="AirlinesName"></label>
+            <input asp-for="AirlinesName" class="form-control" />
+            <span asp-validation-for="AirlinesName" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="SeatCapacity"></label>
+            <input asp-for="SeatCapacity" class="form-control" />
+            <span asp-validation-for="SeatCapacity" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+        <a asp-controller="Flights" asp-action="Index" class="btn btn-secondary" style="width:150px">
+            Back to List
+        </a>
+    </div>
+</form>

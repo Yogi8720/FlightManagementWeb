@@ -1,0 +1,49 @@
+﻿@model IEnumerable<FlightManagement.Model.Flight>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Flight List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Flights" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle"></i>&nbsp;&nbsp;Create New Flight</a>
+        </div>
+    </div>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">FlightNumber</th>
+                <th scope="col">AirlinesName</th>
+                <th scope="col">SeatCapacity</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var flight in Model)
+            {
+                <tr class="table-light">
+                    <td>@flight.FlightNumber</td>
+                    <td>@flight.AirlinesName</td>
+                    <td>@flight.SeatCapacity</td>
+                    <td>
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-controller="Flights" asp-action="Edit" asp-route-id="@flight.FlightNumber" class="btn btn-primary"><i class="bi bi-pencil-square"></i>Edit</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-controller="Flights" asp-action="Delete" asp-route-id="@flight.FlightNumber" class="btn btn-primary"><i class="bi bi-trash"></i>Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
