@@ -11,7 +11,8 @@ namespace FlightManagement.DataAccess.Repository.IRepositories
     {
         T GetFirstOrDefault(Expression<Func<T, bool>> predicate);
 
-        IEnumerable<T> GetAll();
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? IncludeProperties = null);
+        //IEnumerable<T> GetAll();
 
         void Add(T entity);
 

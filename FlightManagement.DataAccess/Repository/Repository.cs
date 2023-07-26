@@ -26,10 +26,34 @@ namespace FlightManagement.DataAccess.Repository
             _db.Add(entity);
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? IncludeProperties = null)
+
         {
+
             IQueryable<T> query = dbSet;
+
+            if (filter != null)
+
+                query = query.Where(filter);
+
+            if (!string.IsNullOrEmpty(IncludeProperties))
+
+
+
+            {
+
+                foreach (var property in IncludeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+
+                {
+
+                    query = query.Include(property);
+
+                }
+
+            }
+
             return query.ToList();
+
         }
 
         public T GetFirstOrDefault(Expression<Func<T, bool>> filter)

@@ -1,4 +1,5 @@
 ﻿using FlightManagement.Model;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FlightManagement.DataAccess.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -16,5 +17,8 @@ namespace FlightManagement.DataAccess.Data
         }
 
         public DbSet<Flight> Flights { get; set; }
+        public DbSet<Route> Route { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Schedule> Schedules { get; set; }
     }
 }

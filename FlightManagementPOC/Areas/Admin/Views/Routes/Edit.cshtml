@@ -1,0 +1,33 @@
+﻿@model FlightManagement.Model.Route
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Create Category</h2>
+            <hr />
+        </div>
+        <input type="hidden" asp-for="RouteNumber" />
+        <div class="mb-3">
+            <label asp-for="Source"></label>
+            <input asp-for="Source" class="form-control" />
+            <span asp-validation-for="Source" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Destination"></label>
+            <input asp-for="Destination" class="form-control" />
+            <span asp-validation-for="Destination" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="RouteName"></label>
+            <input asp-for="RouteName" class="form-control" style="text-transform:uppercase" />
+            <span asp-validation-for="RouteName" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+        <a asp-controller="Flights" asp-action="Index" class="btn btn-secondary" style="width:150px">
+            Back to List
+        </a>
+    </div>
+</form>

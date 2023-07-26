@@ -17,9 +17,15 @@ namespace FlightManagement.DataAccess.Repository
         {
             _db = db;
             Flight = new FlightRepository(_db);
+            Route = new RouteRepository(_db);
+            Schedule = new ScheduleRepository(_db);
         }
 
         public IFlightRepository Flight { get; private set; }
+
+        public IRouteRepository Route { get; private set; }
+
+        public IScheduleRepository Schedule { get; private set; }
 
         public void Save()
         {

@@ -9,6 +9,9 @@ namespace FlightManagement.DataAccess.Repository.IRepositories
     public interface IUnitOfWork
     {
         public IFlightRepository Flight { get; }
+
+        public IRouteRepository Route { get; }
+        public IScheduleRepository Schedule { get; }
         void Save();
     }
 }
