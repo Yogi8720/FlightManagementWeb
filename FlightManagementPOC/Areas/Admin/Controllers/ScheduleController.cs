@@ -1,6 +1,10 @@
-﻿using FlightManagement.DataAccess.Repository.IRepositories;
+﻿using FlightManagement.DataAccess.Repository;
+using FlightManagement.DataAccess.Repository.IRepositories;
 using FlightManagement.Model;
+using FlightManagement.Model.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Composition.Convention;
 
 namespace FlightManagementPOC.Areas.Admin.Controllers
 {
@@ -13,7 +17,7 @@ namespace FlightManagementPOC.Areas.Admin.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        // GET: FlightsController
+        // GET: ScheduleController
         
         public ActionResult Index()
         {
@@ -21,64 +25,70 @@ namespace FlightManagementPOC.Areas.Admin.Controllers
             return View(schedules);
         }
 
-        //GET Create
-        public IActionResult Create()
+        //GET Upsert
+        public IActionResult Upsert(int? id)
         {
-            return View();
+            ScheduleVM scheduleVM = new()
+            {
+                Schedule = new(),
+                FlightList = _unitOfWork.Flight.GetAll().Select(
+                    u => new SelectListItem
+                    {
+                        Text = u.AirlinesName,
+                        Value = u.FlightNumber.ToString()
+                    }),
+                RouteList = _unitOfWork.Route.GetAll().Select(
+                    u => new SelectListItem
+                    {
+                        Text = u.RouteName,
+                        Value = u.RouteNumber.ToString()
+                    })
+            };
+            if(id==null || id == 0)
+            {
+                return View(scheduleVM);
+            }
+            else
+            {
+                scheduleVM.Schedule = _unitOfWork.Schedule.GetFirstOrDefault(a => a.Id == id);
+                return View(scheduleVM);
+            }
         }
 
-        //POST Create
+        //POST Upsert
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Flight obj)
+        public IActionResult Upsert(ScheduleVM scheduleVM)
         {
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
-                _unitOfWork.Flight.Add(obj);
+                if(scheduleVM.Schedule.Id == 0)
+                {
+                    DateTime ArrivalDate = DateTime.Parse(scheduleVM.Schedule.ArrivalTime);
+                    scheduleVM.Schedule.ArrivalTime = (ArrivalDate).ToString();
+                    _unitOfWork.Schedule.Add(scheduleVM.Schedule);
+                }
+                else
+                {
+                    _unitOfWork.Schedule.Update(scheduleVM.Schedule);
+                }
                 _unitOfWork.Save();
-                //TempData["Success"] = "Category created successfully";
                 return RedirectToAction("Index");
             }
-            return View(obj);
-        }
-
-        //GET Edit
-        public IActionResult Edit(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            var flight = _unitOfWork.Flight.GetFirstOrDefault(f => f.FlightNumber == id);
-            return View(flight);
-        }
-
-        //POST Edit
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(Flight flight)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.Flight.Update(flight);
-                _unitOfWork.Save();
-                return RedirectToAction("Index");
-            }
-            return View(flight);
-        }
-
-        //Delete
-        public IActionResult Delete(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            var flight = _unitOfWork.Flight.GetFirstOrDefault(f => f.FlightNumber == id);
-            _unitOfWork.Flight.Remove(flight);
-            _unitOfWork.Save();
             return RedirectToAction("Index");
         }
 
+        //DELETE
+        public IActionResult Delete(int id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var schedule = _unitOfWork.Schedule.GetFirstOrDefault(c => c.Id == id);
+            _unitOfWork.Schedule.Remove(schedule);
+            _unitOfWork.Save();
+            //TempData["Success"] = "Category deleted successfully";
+            return RedirectToAction("Index");
+        }
     }
 }

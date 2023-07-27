@@ -12,6 +12,7 @@ namespace FlightManagement.Model
     public class Schedule
     {
         [Key]
+        [ValidateNever]
         public int Id { get; set; }
 
         public int FlightNumber { get; set; }
@@ -26,9 +27,13 @@ namespace FlightManagement.Model
         [ForeignKey("RouteNumber")]
         public Route Route { get; set; }
 
-        public DateTime DepartureTime { get; set; }
+        [ValidateNever]
+        
+        public string DepartureTime { get; set; }
 
-        public DateTime ArrivalTime { get; set; }
+        [ValidateNever]
+        [DisplayFormat(DataFormatString = "yyyy-MM-dd")]
+        public string ArrivalTime { get; set; }
 
     }
 }

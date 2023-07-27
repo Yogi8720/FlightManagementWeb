@@ -9,7 +9,7 @@ namespace FlightManagement.DataAccess.Repository.IRepositories
 {
     public interface IRepository<T> where T : class
     {
-        T GetFirstOrDefault(Expression<Func<T, bool>> predicate);
+        T GetFirstOrDefault(Expression<Func<T, bool>> predicate, string? IncludeProperties = null);
 
         public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? IncludeProperties = null);
         //IEnumerable<T> GetAll();

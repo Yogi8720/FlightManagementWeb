@@ -1,0 +1,84 @@
+﻿@model FlightManagement.Model.ViewModels.ScheduleVM
+@{
+    ViewData["Title"] = "Upsert";
+}
+
+<form method="post" asp-action="Upsert">
+    <input type="hidden" asp-for="Schedule.Id" />
+    <div class="border p-3 mt-4 row">
+        <div class="row pb-2">
+            <h2 class="text-primary">Edit Schedule</h2>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Schedule.FlightNumber"></label>
+            @*<input asp-for="Schedule.FlightNumber" class="form-control" />*@
+            <select asp-for="Schedule.FlightNumber" asp-items="@Model.FlightList" class="form-select">
+                <option disabled selected>--Select Flight--</option>
+            </select>
+            <span asp-validation-for="Schedule.FlightNumber" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Schedule.RouteNumber"></label>
+            <select asp-for="Schedule.RouteNumber" asp-items="@Model.RouteList" class="form-select">
+                <option disabled selected>--Select Route--</option>
+            </select>
+            <span asp-validation-for="Schedule.FlightNumber" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 col-6">
+            <div class="input-group date" id='datepicker'>
+                <label asp-for="Schedule.ArrivalTime"></label>
+                <input asp-for="Schedule.ArrivalTime" type="datetime" data-format="yyyy-MM-dd" class="form-control" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                <span asp-validation-for="Schedule.ArrivalTime" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="mb-3 col-6">
+            <div class="input-group date" id="datepicker1">
+                <label asp-for="Schedule.DepartureTime"></label>
+                <input asp-for="Schedule.DepartureTime" type="datetime" data-format="yyyy-MM-dd" class="form-control" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                <span asp-validation-for="Schedule.DepartureTime" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        @if (Model.Schedule.Id != 0)
+        {
+        <button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+        }
+        else
+        {
+        <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
+        }
+        <a asp-controller="Schedule" asp-action="Index" class="btn btn-secondary" style="width:150px">
+            Back to List
+        </a>
+    </div>
+
+    @section Scripts
+        {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
+        <script>
+            $(function () {
+                $('#datepicker').datetimepicker();
+            });
+            $(function () {
+                $('#datepicker1').datetimepicker();
+            });
+        </script>
+    }
+</form>
+
+

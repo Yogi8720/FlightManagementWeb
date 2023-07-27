@@ -3,6 +3,7 @@ using FlightManagement.DataAccess.Repository;
 using FlightManagement.DataAccess.Repository.IRepositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +14,10 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("con")
     ));
 
-//builder.Services.AddDefaultIdentity<IdentityUser>()
-//    .AddEntityFrameworkStores<AppDbContext>();
-//builder.Services.AddRazorPages();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
+    .AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
@@ -38,8 +40,8 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{area=Admin}/{controller=Flights}/{action=Index}/{id?}");
+    pattern: "{area=Admin}/{controller=Flight}/{action=Index}/{id?}");
 
-//app.MapRazorPages();
+app.MapRazorPages();
 
 app.Run();
